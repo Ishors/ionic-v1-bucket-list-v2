@@ -1,15 +1,10 @@
-angular.module('starter.services', [])
-
-.factory('BucketList', function($http) {
-  // Might use a resource here that returns a JSON array
-  // Some fake testing data
-  var bucketList = [
+[
     {
         "id": 1, 
         "title": "Sauter en parachute",
         "description": "Sauter en parachute accompagné puis apprendre à le faire solo",
         "deadline": 2021,
-        "photo": "img/sauter-en-parachute.png",
+        "photo": "sauter-en-parachute.png",
         "completed": false
     },
     {
@@ -17,7 +12,7 @@ angular.module('starter.services', [])
         "title": "Chiens de traîneaux",
         "description": "Le must serait dans les pays du Nord, sinon les pyrénées c'est pas mal aussi",
         "deadline": 2022,
-        "photo": "img/chiens-de-traîneaux.png",
+        "photo": "chiens-de-traîneaux.png",
         "completed": false
     },
     {
@@ -25,7 +20,7 @@ angular.module('starter.services', [])
         "title": "Voir une aurore boréale",
         "description": "Aucune description", 
         "deadline": 2050,
-        "photo":"img/voir-une-aurore-boreale.png",
+        "photo":"voir-une-aurore-boreale.png",
         "completed": false
     },
     {
@@ -33,7 +28,7 @@ angular.module('starter.services', [])
         "title": "Travailler en Antarctique",
         "description": "Pour une durée de 12 à 18 mois loin de tout",
         "deadline": 2027,
-        "photo": "img/travailler-en-antarctique.png",
+        "photo": "travailler-en-antarctique.png",
         "completed": false
     },
     {
@@ -41,7 +36,7 @@ angular.module('starter.services', [])
         "title": "Monter ma marque",
         "description": "Oyats vie",
         "deadline": 2022,
-        "photo":"img/monter-ma-marque.png",
+        "photo":"monter-ma-marque.png",
         "completed": false
     },
     {
@@ -49,7 +44,7 @@ angular.module('starter.services', [])
         "title": "Visiter l'Islande",
         "description": "Faire le tour de l'île en van en 2 semaines",
         "deadline": 2025,
-        "photo": "img/visiter-lislande.png",
+        "photo": "visiter-lislande.png",
         "completed": false
     },
     {
@@ -57,7 +52,7 @@ angular.module('starter.services', [])
         "title": "Road-trip Italie du Nord",
         "description": "En van",
         "deadline": 2023,
-        "photo": "img/road-trip-italie-du-nord.png",
+        "photo": "road-trip-italie-du-nord.png",
         "completed": false
     },
     {
@@ -65,7 +60,7 @@ angular.module('starter.services', [])
         "title": "Voyage Amérique du Sud",
         "description": "Salar et compagnie, me voilà !",
         "deadline": 2023,
-        "photo": "img/voyage-amerique-du-sud.png",
+        "photo": "voyage-amerique-du-sud.png",
         "completed": false
     },
     {
@@ -73,25 +68,7 @@ angular.module('starter.services', [])
         "title": "Vivre dans les bois",
         "description": "Laisse tomber le kiff interdimentionnel",
         "deadline": 2070,
-        "photo": "img/vivre-dans-les-bois.png",
+        "photo": "vivre-dans-les-bois.png",
         "completed": false
     }
-  ];
-
-  return {
-    all: function() {
-      return bucketList;
-    },
-    remove: function(bucketListItem) {
-      bucketList.splice(bucketList.indexOf(bucketListItem), 1);
-    },
-    get: function(bucketListItemId) {
-      for (var i = 0; i < bucketList.length; i++) {
-        if (bucketList[i].id === parseInt(bucketListItemId)) {
-          return bucketList[i];
-        }
-      }
-      return null;
-    }
-  };
-});
+]
