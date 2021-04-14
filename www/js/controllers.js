@@ -1,6 +1,6 @@
 angular.module('starter.controllers', [])
 
-.controller('DashCtrl', function($scope) {})
+.controller('FulfilledCtrl', function($scope) {})
 
 .controller('ToFulfillCtrl', function($scope, BucketList) {
   // With the new view caching in Ionic, Controllers are only called
