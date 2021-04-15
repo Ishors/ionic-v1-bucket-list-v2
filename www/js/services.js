@@ -85,7 +85,7 @@ angular.module('starter.services', [])
       "title": "Faire un vol 0G",
       "description": "Se laisser flotter comme un gosse",
       "deadline": 2030,
-      "photo": "",
+      "photo": "img/faire-un-vol-0g.png",
       "completed": false
     }
   ];
@@ -96,7 +96,7 @@ angular.module('starter.services', [])
       "title": "Faire du parapente",
       "description": "Faire du parapente sur la Dune du Pyla avec Roro",
       "deadline": 2022,
-      "photo": "",
+      "photo": "img/faire-du-parapente.png",
       "completed": true
     }
   ];
