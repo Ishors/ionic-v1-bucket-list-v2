@@ -1,6 +1,12 @@
 angular.module('starter.controllers', [])
 
-.controller('FulfilledCtrl', function($scope) {})
+.controller('FulfilledCtrl', function($scope, BucketList) {
+  $scope.orderProp = 'deadline';
+  $scope.bucketList = BucketList.fulfilled();
+  $scope.remove = function(bucketListItem) {
+    BucketList.remove(bucketListItem);
+  };
+})
 
 .controller('ToFulfillCtrl', function($scope, BucketList) {
   // With the new view caching in Ionic, Controllers are only called
@@ -10,8 +16,8 @@ angular.module('starter.controllers', [])
   //
   //$scope.$on('$ionicView.enter', function(e) {
   //});
-
-  $scope.bucketList = BucketList.all();
+  $scope.orderProp = 'deadline';
+  $scope.bucketList = BucketList.toFulfill();
   $scope.remove = function(bucketListItem) {
     BucketList.remove(bucketListItem);
   };

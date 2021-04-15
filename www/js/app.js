@@ -52,7 +52,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
         controller: 'FulfilledCtrl'
       }
     }
-  })
+    })
+    .state('tab.fulfilled-detail', {
+      url: '/fulfilled/:bucketListItemId',
+      views: {
+        'tab-fulfilled': {
+          templateUrl: 'templates/fulfilled-detail.html',
+          controller: 'BucketListItemDetailsCtrl'
+        }
+      }
+    })
 
   .state('tab.to-fulfill', {
       url: '/to-fulfill',

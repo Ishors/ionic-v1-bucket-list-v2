@@ -75,12 +75,46 @@ angular.module('starter.services', [])
         "deadline": 2070,
         "photo": "img/vivre-dans-les-bois.png",
         "completed": false
+    },
+    {
+      "id": 10,
+      "title": "Faire un vol 0G",
+      "description": "Se laisser flotter comme un gosse",
+      "deadline": 2030,
+      "photo": "",
+      "completed": false
+    },
+    {
+      "id": 11,
+      "title": "Faire du parapente",
+      "description": "Faire du parapente sur la Dune du Pyla avec Roro",
+      "deadline": 2022,
+      "photo": "",
+      "completed": true
     }
   ];
 
   return {
     all: function() {
       return bucketList;
+    },
+    toFulfill: function(){
+      var toFulfillArr = [];
+      for (var i=0; i<bucketList.length; i++){
+        if (!bucketList[i].completed){
+          toFulfillArr.push(bucketList[i]);
+        }
+      }
+      return toFulfillArr;
+    },
+    fulfilled: function(){
+      var fulfilledArr = [];
+      for (var i=0; i<bucketList.length; i++){
+        if (bucketList[i].completed){
+          fulfilledArr.push(bucketList[i]);
+        }
+      }
+      return fulfilledArr;
     },
     remove: function(bucketListItem) {
       bucketList.splice(bucketList.indexOf(bucketListItem), 1);
