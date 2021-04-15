@@ -11,7 +11,7 @@
       <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="bucketListItem in bucketList | filter: query | orderBy: orderProp" type="item-text-wrap" href="#/tab/fulfilled/{{bucketListItem.id}}">
         <img ng-src="{{bucketListItem.photo}}" alt="Img">
         <h2>{{bucketListItem.title}}</h2>
-        <p>{{bucketListItem.deadline}}</p>
+        <p><i class="ion-record balanced"></i>  {{bucketListItem.deadline}}</p>
         <i class="icon ion-chevron-right icon-accessory"></i>
 
         <ion-option-button class="button-assertive" ng-click="remove(bucketListItem)">
