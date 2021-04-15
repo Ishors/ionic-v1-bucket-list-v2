@@ -3,7 +3,11 @@ angular.module('starter.services', [])
 .factory('BucketList', function($http) {
   // Might use a resource here that returns a JSON array
   // Some fake testing data
-  var bucketList = [
+
+  // Will ad an if statement that distribute the data
+  // between "fulfilled" and "toFulfill" arrays
+  // when I'll use $http requests and a DB
+  var toFulfill = [
     {
         "id": 1, 
         "title": "Sauter en parachute",
@@ -83,7 +87,10 @@ angular.module('starter.services', [])
       "deadline": 2030,
       "photo": "",
       "completed": false
-    },
+    }
+  ];
+
+  var fulfilled = [
     {
       "id": 11,
       "title": "Faire du parapente",
@@ -95,34 +102,33 @@ angular.module('starter.services', [])
   ];
 
   return {
-    all: function() {
+    /*all: function() {
       return bucketList;
+    },*/
+    fulfilled: function() {
+      return fulfilled;
     },
-    toFulfill: function(){
-      var toFulfillArr = [];
-      for (var i=0; i<bucketList.length; i++){
-        if (!bucketList[i].completed){
-          toFulfillArr.push(bucketList[i]);
+    toFulfill: function() {
+      return toFulfill;
+    },
+    removeFulfilled: function(bucketListItem) {
+      fulfilled.splice(fulfilled.indexOf(bucketListItem), 1);
+    },
+    removeToFulfill: function(bucketListItem) {
+      toFulfill.splice(toFulfill.indexOf(bucketListItem), 1);
+    },
+    getFulfilled: function(bucketListItemId) {
+      for (var i = 0; i < fulfilled.length; i++) {
+        if (fulfilled[i].id === parseInt(bucketListItemId)) {
+          return fulfilled[i];
         }
       }
-      return toFulfillArr;
+      return null;
     },
-    fulfilled: function(){
-      var fulfilledArr = [];
-      for (var i=0; i<bucketList.length; i++){
-        if (bucketList[i].completed){
-          fulfilledArr.push(bucketList[i]);
-        }
-      }
-      return fulfilledArr;
-    },
-    remove: function(bucketListItem) {
-      bucketList.splice(bucketList.indexOf(bucketListItem), 1);
-    },
-    get: function(bucketListItemId) {
-      for (var i = 0; i < bucketList.length; i++) {
-        if (bucketList[i].id === parseInt(bucketListItemId)) {
-          return bucketList[i];
+    getToFulfill: function(bucketListItemId) {
+      for (var i = 0; i < toFulfill.length; i++) {
+        if (toFulfill[i].id === parseInt(bucketListItemId)) {
+          return toFulfill[i];
         }
       }
       return null;

@@ -2,9 +2,11 @@ angular.module('starter.controllers', [])
 
 .controller('FulfilledCtrl', function($scope, BucketList) {
   $scope.orderProp = 'deadline';
+
   $scope.bucketList = BucketList.fulfilled();
+
   $scope.remove = function(bucketListItem) {
-    BucketList.remove(bucketListItem);
+    BucketList.removeFulfilled(bucketListItem);
   };
 })
 
@@ -17,14 +19,20 @@ angular.module('starter.controllers', [])
   //$scope.$on('$ionicView.enter', function(e) {
   //});
   $scope.orderProp = 'deadline';
+  
   $scope.bucketList = BucketList.toFulfill();
+
   $scope.remove = function(bucketListItem) {
-    BucketList.remove(bucketListItem);
+    BucketList.removeToFulfill(bucketListItem);
   };
 })
 
-.controller('BucketListItemDetailsCtrl', function($scope, $stateParams, BucketList) {
-  $scope.bucketListItem = BucketList.get($stateParams.bucketListItemId);
+.controller('BucketListItemDetailsFulfilledCtrl', function($scope, $stateParams, BucketList) {
+  $scope.bucketListItem = BucketList.getFulfilled($stateParams.bucketListItemId);
+})
+
+.controller('BucketListItemDetailsToFulfillCtrl', function($scope, $stateParams, BucketList) {
+  $scope.bucketListItem = BucketList.getToFulfill($stateParams.bucketListItemId);
 })
 
 .controller('AccountCtrl', function($scope) {

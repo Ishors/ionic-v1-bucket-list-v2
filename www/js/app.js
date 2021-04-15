@@ -58,7 +58,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       views: {
         'tab-fulfilled': {
           templateUrl: 'templates/fulfilled-detail.html',
-          controller: 'BucketListItemDetailsCtrl'
+          controller: 'BucketListItemDetailsFulfilledCtrl'
         }
       }
     })
@@ -77,7 +77,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       views: {
         'tab-to-fulfill': {
           templateUrl: 'templates/to-fulfill-detail.html',
-          controller: 'BucketListItemDetailsCtrl'
+          controller: 'BucketListItemDetailsToFulfillCtrl'
         }
       }
     })
