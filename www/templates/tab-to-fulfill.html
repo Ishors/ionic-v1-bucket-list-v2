@@ -1,6 +1,11 @@
-<ion-view view-title="To Fulfill">
-  <ion-content>
+<ion-view view-title="To fulfill">
+  <ion-nav-buttons>
+    <h1 class="title"></h1>
+    <button class="button button-icon ion-compose" ng-click="modal.show()">
+    </button>
+  </ion-nav-buttons>
 
+  <ion-content>
     <div class="item item-input-inset">
       <label class="item-input-wrapper">
         <input type="text" placeholder="Search" ng-model="query">
