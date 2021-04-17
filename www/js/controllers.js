@@ -18,6 +18,7 @@ angular.module('starter.controllers', [])
     //
     //$scope.$on('$ionicView.enter', function(e) {
     //});
+    
     $scope.orderProp = 'deadline';
 
     $scope.bucketList = BucketList.toFulfill();
@@ -25,10 +26,13 @@ angular.module('starter.controllers', [])
     $scope.remove = function (bucketListItem) {
       BucketList.removeToFulfill(bucketListItem);
     };
+    
+    var today = new Date();
+    $scope.currentYear = today.getFullYear();
 
     $ionicModal.fromTemplateUrl('templates/add-item-modal.html', {
       scope: $scope,
-      animation: 'slide-in-up'
+      animation: 'slide-in-up',
     }).then(function (modal) {
       $scope.modal = modal;
     });
@@ -57,7 +61,16 @@ angular.module('starter.controllers', [])
       // Execute action
     });
     
-    $scope.createItem = function(newItem) {        
+    $scope.createItem = function(newItem) {  
+      $scope.bucketList.push(
+        {
+          "id": $scope.bucketList.length+1,
+          "title": newItem.title,
+          "description": newItem.description,
+          "deadline": newItem.deadline,
+          "photo": "img/sup.png",
+          "completed": false
+        });
       $scope.closeModal();
     };
   })
