@@ -7,15 +7,15 @@
         <div class="list">
             <label class="item item-input">
                 <span class="input-label">Title</span>
-                <input ng-model="newItem.title" type="text">
+                <input ng-model="newItem.title" type="text" required>
             </label>
             <label class="item item-input">
                 <span class="input-label">Deadline</span>
-                <input ng-model="newItem.deadline" type="number" min="{{currentYear}}">
+                <input ng-model="newItem.deadline" type="number" min="{{currentYear}}" required>
             </label>
             <label class="item item-input">
                 <span class="input-label">Description</span>
-                <input ng-model="newItem.description" type="text">
+                <input ng-model="newItem.description" type="text" required>
             </label>
             <button class="button button-full button-positive" ng-click="createItem(newItem)">Create</button>
         </div>

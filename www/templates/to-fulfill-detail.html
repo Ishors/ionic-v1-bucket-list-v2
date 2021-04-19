@@ -6,11 +6,13 @@
 -->
 <ion-view view-title="{{bucketListItem.title}}">
   <ion-content class="padding">
-    <img ng-src="{{bucketListItem.photo}}" style="width: 64px; height: 64px">
-    <p>
-      {{bucketListItem.description}} <br>
-      {{bucketListItem.id}}
+    <img ng-src="{{bucketListItem.photo}}" class="photo">
+    <div class="detail">
+      <h4 class="italic">Deadline:</h4>
+      <p>{{bucketListItem.deadline}}</p>
 
-    </p>
+      <h4 class="italic">Description:</h4>   
+      <p>{{bucketListItem.description}}</p>
+    </div>
   </ion-content>
 </ion-view>
