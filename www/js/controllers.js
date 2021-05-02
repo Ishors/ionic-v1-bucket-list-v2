@@ -1,16 +1,32 @@
 angular.module('starter.controllers', [])
 
-  .controller('FulfilledCtrl', function ($scope, BucketList) {
+  .controller('FulfilledCtrl', function ($scope, BucketList, $timeout) {
     $scope.orderProp = 'deadline';
 
-    $scope.bucketList = BucketList.fulfilled();
+    BucketList.fulfilled().then(function (response) {
+      $scope.bucketList = response.data.rows;
+    }, function (error) {
+      console.log("Error occured ", error);
+    });
 
-    $scope.remove = function (bucketListItem) {
-      BucketList.removeFulfilled(bucketListItem);
+    $scope.remove = function (bucketListItemId) {
+      BucketList.remove(bucketListItemId);
+    };
+
+    $scope.doRefresh = function () {
+      $timeout(function () {
+        BucketList.fulfilled().then(function (response) {
+          $scope.bucketList = response.data.rows;
+        }, function (error) {
+          console.log("Error occured ", error);
+        });
+        //Stop the ion-refresher from spinning
+        $scope.$broadcast('scroll.refreshComplete');
+      }, 1000);
     };
   })
 
-  .controller('ToFulfillCtrl', function ($scope, $ionicModal, BucketList) {
+  .controller('ToFulfillCtrl', function ($scope, $ionicModal, BucketList, $timeout) {
     // With the new view caching in Ionic, Controllers are only called
     // when they are recreated or on app start, instead of every page change.
     // To listen for when this page is active (for example, to refresh data),
@@ -18,15 +34,23 @@ angular.module('starter.controllers', [])
     //
     //$scope.$on('$ionicView.enter', function(e) {
     //});
-    
+
     $scope.orderProp = 'deadline';
 
-    $scope.bucketList = BucketList.toFulfill();
+    BucketList.toFulfill().then(function (response) {
+      $scope.bucketList = response.data.rows;
+    }, function (error) {
+      console.log("Error occured ", error);
+    });
 
-    $scope.remove = function (bucketListItem) {
-      BucketList.removeToFulfill(bucketListItem);
+    $scope.remove = function (bucketListItemId) {
+      BucketList.removeItem(bucketListItemId).then(function (response) {
+        console.log("Item deleted");
+      }, function (error) {
+        console.log("Error occured ", error);
+      });
     };
-    
+
     var today = new Date();
     $scope.currentYear = today.getFullYear();
 
@@ -60,27 +84,53 @@ angular.module('starter.controllers', [])
     $scope.$on('modal.removed', function () {
       // Execute action
     });
-    
-    $scope.createItem = function(newItem) {  
-      $scope.bucketList.push(
-        {
-          "id": $scope.bucketList.length+1,
-          "title": newItem.title,
-          "description": newItem.description,
-          "deadline": newItem.deadline,
-          "photo": "img/sup.png",
-          "completed": false
-        });
+
+    $scope.createItem = function (newItem) {
+      var itemToPost;
+      itemToPost =
+      {
+        "created": $scope.bucketList.length + 1,
+        "title": newItem.title,
+        "description": newItem.description,
+        "deadline": newItem.deadline,
+        "photo": "img/sup.png",
+        "completed": false
+      };
+      BucketList.addItem(itemToPost).then(function (response) {
+        console.log("Item added");
+      }, function (error) {
+        console.log("Erroer occured ", error);
+      });
       $scope.closeModal();
+    };
+
+    $scope.doRefresh = function () {
+      $timeout(function () {
+        //Stop the ion-refresher from spinning
+        BucketList.toFulfill().then(function (response) {
+          $scope.bucketList = response.data.rows;
+        }, function (error) {
+          console.log("Error occured ", error);
+        });
+        $scope.$broadcast('scroll.refreshComplete');
+      }, 1000);
     };
   })
 
   .controller('BucketListItemDetailsFulfilledCtrl', function ($scope, $stateParams, BucketList) {
-    $scope.bucketListItem = BucketList.getFulfilled($stateParams.bucketListItemId);
+    BucketList.getItem($stateParams.bucketListItemId).then(function (response) {
+      $scope.bucketListItem = response.data;
+    }, function (error) {
+      console.log("Error occured ", error);
+    });
   })
 
   .controller('BucketListItemDetailsToFulfillCtrl', function ($scope, $stateParams, BucketList) {
-    $scope.bucketListItem = BucketList.getToFulfill($stateParams.bucketListItemId);
+    BucketList.getItem($stateParams.bucketListItemId).then(function (response) {
+      $scope.bucketListItem = response.data;
+    }, function (error) {
+      console.log("Error occured ", error);
+    });
   })
 
   .controller('AccountCtrl', function ($scope) {

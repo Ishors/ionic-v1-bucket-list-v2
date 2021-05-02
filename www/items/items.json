@@ -1,74 +1,82 @@
 [
     {
-        "id": 1, 
+        "created": 1, 
         "title": "Sauter en parachute",
         "description": "Sauter en parachute accompagné puis apprendre à le faire solo",
         "deadline": 2021,
-        "photo": "sauter-en-parachute.png",
+        "photo": "img/sauter-en-parachute.png",
         "completed": false
     },
     {
-        "id": 2,
+        "created": 2,
         "title": "Chiens de traîneaux",
         "description": "Le must serait dans les pays du Nord, sinon les pyrénées c'est pas mal aussi",
         "deadline": 2022,
-        "photo": "chiens-de-traîneaux.png",
+        "photo": "img/chiens-de-traîneaux.png",
         "completed": false
     },
     {
-        "id": 3,
+        "created": 3,
         "title": "Voir une aurore boréale",
         "description": "Aucune description", 
         "deadline": 2050,
-        "photo":"voir-une-aurore-boreale.png",
+        "photo":"img/voir-une-aurore-boreale.png",
         "completed": false
     },
     {
-        "id": 4,
+        "created": 4,
         "title": "Travailler en Antarctique",
         "description": "Pour une durée de 12 à 18 mois loin de tout",
         "deadline": 2027,
-        "photo": "travailler-en-antarctique.png",
+        "photo": "img/travailler-en-antarctique.png",
         "completed": false
     },
     {
-        "id": 5,
+        "created": 5,
         "title": "Monter ma marque",
         "description": "Oyats vie",
         "deadline": 2022,
-        "photo":"monter-ma-marque.png",
+        "photo":"img/monter-ma-marque.png",
         "completed": false
     },
     {
-        "id": 6,
+        "created": 6,
         "title": "Visiter l'Islande",
         "description": "Faire le tour de l'île en van en 2 semaines",
         "deadline": 2025,
-        "photo": "visiter-lislande.png",
+        "photo": "img/visiter-lislande.png",
         "completed": false
     },
     {
-        "id": 7,
+        "created": 7,
         "title": "Road-trip Italie du Nord",
         "description": "En van",
         "deadline": 2023,
-        "photo": "road-trip-italie-du-nord.png",
+        "photo": "img/road-trip-italie-du-nord.png",
         "completed": false
     },
     {
-        "id": 8,
+        "created": 8,
         "title": "Voyage Amérique du Sud",
         "description": "Salar et compagnie, me voilà !",
         "deadline": 2023,
-        "photo": "voyage-amerique-du-sud.png",
+        "photo": "img/voyage-amerique-du-sud.png",
         "completed": false
     },
     {
-        "id": 9,
+        "created": 9,
         "title": "Vivre dans les bois",
         "description": "Laisse tomber le kiff interdimentionnel",
         "deadline": 2070,
-        "photo": "vivre-dans-les-bois.png",
+        "photo": "img/vivre-dans-les-bois.png",
         "completed": false
+    },
+    {
+        "created": 10,
+        "title": "Faire du parapente",
+        "description": "Faire du parapente depuis la Dune du Pyla avec la grande Roro",
+        "deadline": 2020,
+        "photo": "img/faire-du-parapente.png",
+        "completed": true
     }
 ]

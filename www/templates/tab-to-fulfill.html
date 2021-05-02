@@ -12,14 +12,18 @@
       </label>
     </div>
 
+    <ion-refresher on-refresh="doRefresh()" pulling-text="Pull to refresh..." refreshing-text="Refreshing!"
+      refreshing-icon="ion-loading-c">
+    </ion-refresher>
+    
     <ion-list>
-      <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="bucketListItem in bucketList | filter: query | orderBy: orderProp" type="item-text-wrap" href="#/tab/to-fulfill/{{bucketListItem.id}}">
-        <img ng-src="{{bucketListItem.photo}}" alt="Img">
-        <h2>{{bucketListItem.title}}</h2>
-        <p><i class="ion-record" ng-class="bucketListItem.deadline >= currentYear+1 ? 'positive' : (bucketListItem.deadline < currentYear ? 'assertive' : 'energized')"></i>  {{bucketListItem.deadline}}</p>
+      <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="bucketListItem in bucketList | filter: query | orderBy: orderProp" type="item-text-wrap" href="#/tab/to-fulfill/{{bucketListItem.key._id}}">
+        <img ng-src="{{bucketListItem.key.photo}}" alt="Img">
+        <h2>{{bucketListItem.key.title}}</h2>
+        <p><i class="ion-record" ng-class="bucketListItem.key.deadline >= currentYear+1 ? 'positive' : (bucketListItem.key.deadline < currentYear ? 'assertive' : 'energized')"></i>  {{bucketListItem.key.deadline}}</p>
         <i class="icon ion-chevron-right icon-accessory"></i>
 
-        <ion-option-button class="button-assertive" ng-click="remove(bucketListItem)">
+        <ion-option-button class="button-assertive" ng-click="remove(bucketListItem.key._id)">
           Delete
         </ion-option-button>
       </ion-item>
