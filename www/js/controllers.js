@@ -1,16 +1,12 @@
 angular.module('starter.controllers', [])
 
-  .controller('FulfilledCtrl', function ($scope, BucketList, $timeout) {
+  .controller('FulfilledCtrl', function ($scope, $timeout, BucketList, FormatDate) {
     $scope.orderProp = 'key.completedDate';
 
     BucketList.fulfilled().then(function (response) {
       $scope.bucketList = response.data.rows;
       for (var i=0; i<$scope.bucketList.length; i++){
-        var date = $scope.bucketList[i].key.completedDate;
-        var split = date.split("-");
-        var daySplit = split[2].split("T");
-        var displayDate = daySplit[0] + '/' + split[1] + '/' +split[0].substring(1,split[0].length);
-        $scope.bucketList[i].key.completedDate = displayDate;
+        $scope.bucketList[i].key.completedDate = FormatDate.format($scope.bucketList[i].key.completedDate);
       }
     }, function (error) {
       console.log("Error occured ", error);
@@ -33,7 +29,7 @@ angular.module('starter.controllers', [])
         });
         //Stop the ion-refresher from spinning
         $scope.$broadcast('scroll.refreshComplete');
-      }, 1000);
+      }, 50);
     };
   })
 
@@ -150,14 +146,10 @@ angular.module('starter.controllers', [])
     };
   })
 
-  .controller('BucketListItemDetailsFulfilledCtrl', function ($scope, $stateParams, BucketList) {
+  .controller('BucketListItemDetailsFulfilledCtrl', function ($scope, $stateParams, BucketList, FormatDate) {
     BucketList.getItem($stateParams.bucketListItemId).then(function (response) {
       $scope.bucketListItem = response.data;
-      var date = $scope.bucketListItem.completedDate;
-      var split = date.split("-");
-      var daySplit = split[2].split("T");
-      var displayDate = daySplit[0] + '/' + split[1] + '/' +split[0].substring(1,split[0].length);
-      $scope.bucketListItem.completedDate = displayDate;
+      $scope.bucketListItem.completedDate = FormatDate.format($scope.bucketListItem.completedDate);
     }, function (error) {
       console.log("Error occured ", error);
     });

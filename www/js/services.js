@@ -47,4 +47,14 @@ angular.module('starter.services', [])
         });
       }
     };
+  })
+
+  .factory('FormatDate', function () {
+    return{
+      format: function(date){
+        var split = date.split("-");
+        var daySplit = split[2].split("T");
+        return daySplit[0] + '/' + split[1] + '/' +split[0].substring(1,split[0].length);
+      }
+    }
   });
