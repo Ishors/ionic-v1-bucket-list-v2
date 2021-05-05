@@ -38,9 +38,13 @@ angular.module('starter.controllers', [])
         $scope.$broadcast('scroll.refreshComplete');
       }, 100);
     };
+
+    $scope.$on('refresh', function() {
+      $scope.doRefresh();
+    });
   })
 
-  .controller('ToFulfillCtrl', function ($scope, $ionicModal, $timeout, BucketList, Popup) {
+  .controller('ToFulfillCtrl', function ($scope, $rootScope, $ionicModal, $timeout, BucketList, Popup) {
     // With the new view caching in Ionic, Controllers are only called
     // when they are recreated or on app start, instead of every page change.
     // To listen for when this page is active (for example, to refresh data),
@@ -80,7 +84,7 @@ angular.module('starter.controllers', [])
     $scope.complete = function (bucketListItemId) {
       BucketList.complete(bucketListItemId).then(function (response) {
         Popup.complete();
-        $scope.doRefresh();
+        $rootScope.$broadcast('refresh');
         console.log("Item Completed");
       }, function (error) {
         console.log("Error occured ", error);
@@ -123,7 +127,6 @@ angular.module('starter.controllers', [])
       // Execute action
     });
 
-
     $scope.createItem = function (newItem) {
       var itemToPost;
       if (newItem.title && newItem.description && newItem.deadline){
@@ -141,7 +144,7 @@ angular.module('starter.controllers', [])
         }, function (error) {
           console.log("Error occured ", error);
         });
-        $scope.doRefresh();
+        $rootScope.$broadcast('refresh');
         $scope.closeModal();
         }
     };
@@ -156,9 +159,13 @@ angular.module('starter.controllers', [])
         $scope.$broadcast('scroll.refreshComplete');
       }, 50);
     };
+
+    $scope.$on('refresh', function() {
+      $scope.doRefresh();
+    });
   })
 
-  .controller('BucketListItemDetailsFulfilledCtrl', function ($scope, $stateParams, $timeout, BucketList, Format, Popup) {
+  .controller('BucketListItemDetailsFulfilledCtrl', function ($rootScope, $scope, $stateParams, BucketList, Format, Popup) {
     BucketList.getItem($stateParams.bucketListItemId).then(function (response) {
       $scope.bucketListItem = response.data;
       $scope.bucketListItem.completedDate = Format.date($scope.bucketListItem.completedDate);
@@ -170,7 +177,7 @@ angular.module('starter.controllers', [])
       Popup.delete().then(function(response){
         if (response){
           BucketList.removeItem(bucketListItemId).then(function (res) {
-            $scope.doRefresh();
+            $rootScope.$broadcast('refresh');
             console.log("Item deleted");
           }, function (error) {
             console.log("Error occured ", error);
@@ -179,19 +186,9 @@ angular.module('starter.controllers', [])
       });
     };
 
-    $scope.doRefresh = function () {
-      $timeout(function () {
-        BucketList.toFulfill().then(function (response) {
-          $scope.bucketList = response.data.rows;
-        }, function (error) {
-          console.log("Error occured ", error);
-        });
-        $scope.$broadcast('scroll.refreshComplete');
-      }, 50);
-    };
   })
 
-  .controller('BucketListItemDetailsToFulfillCtrl', function ($scope, $stateParams, $timeout, BucketList, Popup) {
+  .controller('BucketListItemDetailsToFulfillCtrl', function ($scope, $rootScope, $stateParams, $timeout, BucketList, Popup) {
     BucketList.getItem($stateParams.bucketListItemId).then(function (response) {
       $scope.bucketListItem = response.data;
     }, function (error) {
@@ -202,7 +199,7 @@ angular.module('starter.controllers', [])
       Popup.delete().then(function(response){
         if (response){
           BucketList.removeItem(bucketListItemId).then(function (res) {
-            $scope.doRefresh();
+            $rootScope.$broadcast('refresh');
             console.log("Item deleted");
           }, function (error) {
             console.log("Error occured ", error);
@@ -211,21 +208,10 @@ angular.module('starter.controllers', [])
       });
     };
 
-    $scope.doRefresh = function () {
-      $timeout(function () {
-        BucketList.toFulfill().then(function (response) {
-          $scope.bucketList = response.data.rows;
-        }, function (error) {
-          console.log("Error occured ", error);
-        });
-        $scope.$broadcast('scroll.refreshComplete');
-      }, 50);
-    };
-
     $scope.complete = function (bucketListItemId) {
       BucketList.complete(bucketListItemId).then(function (response) {
         Popup.complete();
-        $scope.doRefresh();
+        $rootScope.$broadcast('refresh');
         console.log("Item Completed");
       }, function (error) {
         console.log("Error occured ", error);
