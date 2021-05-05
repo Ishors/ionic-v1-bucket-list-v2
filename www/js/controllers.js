@@ -36,7 +36,7 @@ angular.module('starter.controllers', [])
     };
   })
 
-  .controller('ToFulfillCtrl', function ($scope, $ionicModal, BucketList, $timeout) {
+  .controller('ToFulfillCtrl', function ($scope, $ionicModal, $timeout, $ionicPopup, BucketList ) {
     // With the new view caching in Ionic, Controllers are only called
     // when they are recreated or on app start, instead of every page change.
     // To listen for when this page is active (for example, to refresh data),
@@ -71,6 +71,14 @@ angular.module('starter.controllers', [])
 
     $scope.complete = function (bucketListItemId) {
       BucketList.complete(bucketListItemId).then(function (response) {
+        $scope.congrats = function(){
+          $ionicPopup.alert({
+            title: 'Congrats !!',
+            template: "You've fulfilled one of your dream! Keep going!",
+            cssClass: 'popUp'  
+          })
+        };
+        $scope.congrats();
         $scope.doRefresh();
         console.log("Item Completed");
       }, function (error) {
@@ -158,12 +166,20 @@ angular.module('starter.controllers', [])
     });
   })
 
-  .controller('BucketListItemDetailsToFulfillCtrl', function ($scope, $stateParams, $timeout, BucketList) {
+  .controller('BucketListItemDetailsToFulfillCtrl', function ($scope, $stateParams, $timeout, $ionicPopup, BucketList) {
     BucketList.getItem($stateParams.bucketListItemId).then(function (response) {
       $scope.bucketListItem = response.data;
     }, function (error) {
       console.log("Error occured ", error);
     });
+
+    $scope.congrats = function(){
+      $ionicPopup.alert({
+        title: 'Congrats !!',
+        template: "You've fulfilled one of your dream! Keep going!",
+        cssClass: 'popUp'  
+      })
+    };
 
     $scope.doRefresh = function () {
       $timeout(function () {
