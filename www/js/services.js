@@ -27,6 +27,24 @@ angular.module('starter.services', [])
       },
       addItem: function (bucketListItem) {
         return $http.post(db.db, bucketListItem);
+      },
+      complete: function(bucketListItemId){
+        var today = new Date();
+        var jsonDate = JSON.stringify(today);
+        return $http.get(db.db + '/' + bucketListItemId).then(function(response){
+          $http.put(db.db + '/' +bucketListItemId,
+          {
+            "_id": response.data._id,
+            "_rev": response.data._rev,
+            "created": response.data.created,
+            "title": response.data.title,
+            "description": response.data.description,
+            "deadline": response.data.deadline,
+            "photo": response.data.photo,
+            "completed": true,
+            "completedDate": jsonDate
+          });
+        });
       }
     };
   });

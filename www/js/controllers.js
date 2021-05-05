@@ -1,14 +1,20 @@
 angular.module('starter.controllers', [])
 
   .controller('FulfilledCtrl', function ($scope, BucketList, $timeout) {
-    $scope.orderProp = 'deadline';
+    $scope.orderProp = 'key.completedDate';
 
     BucketList.fulfilled().then(function (response) {
       $scope.bucketList = response.data.rows;
+      for (var i=0; i<$scope.bucketList.length; i++){
+        var date = $scope.bucketList[i].key.completedDate;
+        var split = date.split("-");
+        var daySplit = split[2].split("T");
+        var displayDate = daySplit[0] + '/' + split[1] + '/' +split[0].substring(1,split[0].length);
+        $scope.bucketList[i].key.completedDate = displayDate;
+      }
     }, function (error) {
       console.log("Error occured ", error);
     });
-
     $scope.remove = function (bucketListItemId) {
       BucketList.removeItem(bucketListItemId).then(function (response) {
         $scope.doRefresh();
@@ -59,6 +65,15 @@ angular.module('starter.controllers', [])
       BucketList.removeItem(bucketListItemId).then(function (response) {
         $scope.doRefresh();
         console.log("Item deleted");
+      }, function (error) {
+        console.log("Error occured ", error);
+      });
+    };
+
+    $scope.complete = function (bucketListItemId) {
+      BucketList.complete(bucketListItemId).then(function (response) {
+        $scope.doRefresh();
+        console.log("Item Completed");
       }, function (error) {
         console.log("Error occured ", error);
       });
@@ -138,6 +153,11 @@ angular.module('starter.controllers', [])
   .controller('BucketListItemDetailsFulfilledCtrl', function ($scope, $stateParams, BucketList) {
     BucketList.getItem($stateParams.bucketListItemId).then(function (response) {
       $scope.bucketListItem = response.data;
+      var date = $scope.bucketListItem.completedDate;
+      var split = date.split("-");
+      var daySplit = split[2].split("T");
+      var displayDate = daySplit[0] + '/' + split[1] + '/' +split[0].substring(1,split[0].length);
+      $scope.bucketListItem.completedDate = displayDate;
     }, function (error) {
       console.log("Error occured ", error);
     });
