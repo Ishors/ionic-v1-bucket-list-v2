@@ -72,7 +72,17 @@ angular.module('starter.services', [])
         return $ionicPopup.confirm({
                   title: 'Are you sure ?',
                   template: 'This action cannot be reversed',
-                  cssClass: 'popUp'  
+                  cssClass: 'popUp',
+                  buttons: [
+                    { text: 'No' },
+                    {
+                      text: '<b>Yes</b>',
+                      type: 'button-positive',
+                      onTap: function(e) {
+                        return e;
+                      }
+                    }
+                  ]  
                 });
       }
     }
