@@ -21,7 +21,9 @@ angular.module('starter.services', [])
         return $http.get(db.db + '/' + bucketListItemId);
       },
       removeItem: function (bucketListItemId) {
-        return $http.delete(db.db + '/' + bucketListItemId);
+        return $http.get(db.db + '/' + bucketListItemId).then(function(response){
+          $http.delete(db.db + '/' + bucketListItemId+'?rev='+response.data._rev);
+        });
       },
       addItem: function (bucketListItem) {
         return $http.post(db.db, bucketListItem);

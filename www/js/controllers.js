@@ -10,7 +10,12 @@ angular.module('starter.controllers', [])
     });
 
     $scope.remove = function (bucketListItemId) {
-      BucketList.remove(bucketListItemId);
+      BucketList.removeItem(bucketListItemId).then(function (response) {
+        $scope.doRefresh();
+        console.log("Item deleted");
+      }, function (error) {
+        console.log("Error occured ", error);
+      });
     };
 
     $scope.doRefresh = function () {
@@ -35,7 +40,7 @@ angular.module('starter.controllers', [])
     //$scope.$on('$ionicView.enter', function(e) {
     //});
 
-    $scope.orderProp = 'deadline';
+    $scope.orderProp = 'key.deadline';
 
     BucketList.all().then(function (response) {
       var items = response.data.rows;
@@ -52,6 +57,7 @@ angular.module('starter.controllers', [])
 
     $scope.remove = function (bucketListItemId) {
       BucketList.removeItem(bucketListItemId).then(function (response) {
+        $scope.doRefresh();
         console.log("Item deleted");
       }, function (error) {
         console.log("Error occured ", error);
@@ -112,6 +118,7 @@ angular.module('starter.controllers', [])
         }, function (error) {
           console.log("Error occured ", error);
         });
+        $scope.doRefresh();
         $scope.closeModal();
         }
     };
@@ -124,7 +131,7 @@ angular.module('starter.controllers', [])
           console.log("Error occured ", error);
         });
         $scope.$broadcast('scroll.refreshComplete');
-      }, 1000);
+      }, 50);
     };
   })
 
