@@ -7,7 +7,6 @@ angular.module('starter.services', [])
     // Will ad an if statement that distribute the data
     // between "fulfilled" and "toFulfill" arrays
     // when I'll use $http requests and a DB
-
     return {
       all: function () {
         return $http.get(db.db + '/_design/bucket-list/_view/all');

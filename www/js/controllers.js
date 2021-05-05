@@ -37,6 +37,13 @@ angular.module('starter.controllers', [])
 
     $scope.orderProp = 'deadline';
 
+    BucketList.all().then(function (response) {
+      var items = response.data.rows;
+      $scope.length = items.length;
+    }, function (error) {
+      console.log("Error occured ", error);
+    });
+
     BucketList.toFulfill().then(function (response) {
       $scope.bucketList = response.data.rows;
     }, function (error) {
@@ -60,11 +67,20 @@ angular.module('starter.controllers', [])
     }).then(function (modal) {
       $scope.modal = modal;
     });
+    
     $scope.openModal = function () {
       $scope.modal.show();
     };
     $scope.closeModal = function () {
-      $scope.modal.hide();
+      $scope.modal.hide().then(function(response){
+        $scope.modal.remove();
+        $ionicModal.fromTemplateUrl('templates/add-item-modal.html', {
+          scope: $scope,
+          animation: 'slide-in-up',
+        }).then(function (modal) {
+          $scope.modal = modal;
+        });
+      });
     };
     // Cleanup the modal when we're done with it!
     $scope.$on('$destroy', function () {
@@ -72,41 +88,38 @@ angular.module('starter.controllers', [])
     });
     // Execute action on hide modal
     $scope.$on('modal.hidden', function () {
-      /*$scope.modal.remove();
-      $ionicModal.fromTemplateUrl('templates/add-item-modal.html', {
-        scope: $scope,
-        animation: 'slide-in-up'
-      }).then(function (modal) {
-        $scope.modal = modal;
-      });*/
+      
     });
     // Execute action on remove modal
     $scope.$on('modal.removed', function () {
       // Execute action
     });
 
+
     $scope.createItem = function (newItem) {
       var itemToPost;
-      itemToPost =
-      {
-        "created": $scope.bucketList.length + 1,
-        "title": newItem.title,
-        "description": newItem.description,
-        "deadline": newItem.deadline,
-        "photo": "img/sup.png",
-        "completed": false
-      };
-      BucketList.addItem(itemToPost).then(function (response) {
-        console.log("Item added");
-      }, function (error) {
-        console.log("Erroer occured ", error);
-      });
-      $scope.closeModal();
+      if (newItem.title && newItem.description && newItem.deadline){
+        itemToPost =
+        {
+          "created": $scope.length + 1,
+          "title": newItem.title,
+          "description": newItem.description,
+          "deadline": newItem.deadline,
+          "photo": "img/sup.png",
+          "completed": false
+        };
+        BucketList.addItem(itemToPost).then(function (response) {
+          console.log("Item added");
+        }, function (error) {
+          console.log("Error occured ", error);
+        });
+        $scope.closeModal();
+      }
+      
     };
 
     $scope.doRefresh = function () {
       $timeout(function () {
-        //Stop the ion-refresher from spinning
         BucketList.toFulfill().then(function (response) {
           $scope.bucketList = response.data.rows;
         }, function (error) {
