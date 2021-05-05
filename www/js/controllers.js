@@ -1,6 +1,6 @@
 angular.module('starter.controllers', [])
 
-  .controller('FulfilledCtrl', function ($scope, $timeout, BucketList, Format) {
+  .controller('FulfilledCtrl', function ($scope, $timeout, BucketList, Format, Popup) {
     $scope.orderProp = 'key.completedDate';
 
     BucketList.fulfilled().then(function (response) {
@@ -12,12 +12,17 @@ angular.module('starter.controllers', [])
       console.log("Error occured ", error);
     });
     $scope.remove = function (bucketListItemId) {
-      BucketList.removeItem(bucketListItemId).then(function (response) {
-        $scope.doRefresh();
-        console.log("Item deleted");
-      }, function (error) {
-        console.log("Error occured ", error);
+      Popup.delete().then(function(response){
+        if (response){
+          BucketList.removeItem(bucketListItemId).then(function (res) {
+            $scope.doRefresh();
+            console.log("Item deleted");
+          }, function (error) {
+            console.log("Error occured ", error);
+          });
+        }
       });
+        
     };
 
     $scope.doRefresh = function () {
@@ -32,11 +37,11 @@ angular.module('starter.controllers', [])
         });
         //Stop the ion-refresher from spinning
         $scope.$broadcast('scroll.refreshComplete');
-      }, 50);
+      }, 100);
     };
   })
 
-  .controller('ToFulfillCtrl', function ($scope, $ionicModal, $timeout, $ionicPopup, BucketList ) {
+  .controller('ToFulfillCtrl', function ($scope, $ionicModal, $timeout, BucketList, Popup) {
     // With the new view caching in Ionic, Controllers are only called
     // when they are recreated or on app start, instead of every page change.
     // To listen for when this page is active (for example, to refresh data),
@@ -61,24 +66,21 @@ angular.module('starter.controllers', [])
     });
 
     $scope.remove = function (bucketListItemId) {
-      BucketList.removeItem(bucketListItemId).then(function (response) {
-        $scope.doRefresh();
-        console.log("Item deleted");
-      }, function (error) {
-        console.log("Error occured ", error);
+      Popup.delete().then(function(response){
+        if (response){
+          BucketList.removeItem(bucketListItemId).then(function (res) {
+            $scope.doRefresh();
+            console.log("Item deleted");
+          }, function (error) {
+            console.log("Error occured ", error);
+          });
+        }
       });
     };
 
     $scope.complete = function (bucketListItemId) {
       BucketList.complete(bucketListItemId).then(function (response) {
-        $scope.congrats = function(){
-          $ionicPopup.alert({
-            title: 'Congrats !!',
-            template: "You've fulfilled one of your dream! Keep going!",
-            cssClass: 'popUp'  
-          })
-        };
-        $scope.congrats();
+        Popup.complete();
         $scope.doRefresh();
         console.log("Item Completed");
       }, function (error) {
@@ -166,19 +168,24 @@ angular.module('starter.controllers', [])
     });
   })
 
-  .controller('BucketListItemDetailsToFulfillCtrl', function ($scope, $stateParams, $timeout, $ionicPopup, BucketList) {
+  .controller('BucketListItemDetailsToFulfillCtrl', function ($scope, $stateParams, $timeout, BucketList, Popup) {
     BucketList.getItem($stateParams.bucketListItemId).then(function (response) {
       $scope.bucketListItem = response.data;
     }, function (error) {
       console.log("Error occured ", error);
     });
 
-    $scope.congrats = function(){
-      $ionicPopup.alert({
-        title: 'Congrats !!',
-        template: "You've fulfilled one of your dream! Keep going!",
-        cssClass: 'popUp'  
-      })
+    $scope.remove = function (bucketListItemId) {
+      Popup.delete().then(function(response){
+        if (response){
+          BucketList.removeItem(bucketListItemId).then(function (res) {
+            $scope.doRefresh();
+            console.log("Item deleted");
+          }, function (error) {
+            console.log("Error occured ", error);
+          });
+        }
+      });
     };
 
     $scope.doRefresh = function () {
@@ -194,6 +201,7 @@ angular.module('starter.controllers', [])
 
     $scope.complete = function (bucketListItemId) {
       BucketList.complete(bucketListItemId).then(function (response) {
+        Popup.complete();
         $scope.doRefresh();
         console.log("Item Completed");
       }, function (error) {

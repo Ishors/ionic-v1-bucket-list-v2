@@ -57,4 +57,23 @@ angular.module('starter.services', [])
         return daySplit[0] + '/' + split[1] + '/' +split[0].substring(1,split[0].length);
       }
     }
+  })
+  
+  .factory('Popup', function ($ionicPopup) {
+    return{
+      complete: function(){
+        return $ionicPopup.alert({
+                  title: 'Congrats !!',
+                  template: "You've fulfilled one of your dream ! Keep going !",
+                  cssClass: 'popUp'  
+                });
+      },  
+      delete: function(){
+        return $ionicPopup.confirm({
+                  title: 'Are you sure ?',
+                  template: 'This action cannot be reversed',
+                  cssClass: 'popUp'  
+                });
+      }
+    }
   });
