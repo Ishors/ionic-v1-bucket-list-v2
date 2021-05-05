@@ -22,7 +22,6 @@ angular.module('starter.controllers', [])
           });
         }
       });
-        
     };
 
     $scope.doRefresh = function () {
@@ -159,13 +158,37 @@ angular.module('starter.controllers', [])
     };
   })
 
-  .controller('BucketListItemDetailsFulfilledCtrl', function ($scope, $stateParams, BucketList, Format) {
+  .controller('BucketListItemDetailsFulfilledCtrl', function ($scope, $stateParams, $timeout, BucketList, Format, Popup) {
     BucketList.getItem($stateParams.bucketListItemId).then(function (response) {
       $scope.bucketListItem = response.data;
       $scope.bucketListItem.completedDate = Format.date($scope.bucketListItem.completedDate);
     }, function (error) {
       console.log("Error occured ", error);
     });
+
+    $scope.remove = function (bucketListItemId) {
+      Popup.delete().then(function(response){
+        if (response){
+          BucketList.removeItem(bucketListItemId).then(function (res) {
+            $scope.doRefresh();
+            console.log("Item deleted");
+          }, function (error) {
+            console.log("Error occured ", error);
+          });
+        }
+      });
+    };
+
+    $scope.doRefresh = function () {
+      $timeout(function () {
+        BucketList.toFulfill().then(function (response) {
+          $scope.bucketList = response.data.rows;
+        }, function (error) {
+          console.log("Error occured ", error);
+        });
+        $scope.$broadcast('scroll.refreshComplete');
+      }, 50);
+    };
   })
 
   .controller('BucketListItemDetailsToFulfillCtrl', function ($scope, $stateParams, $timeout, BucketList, Popup) {

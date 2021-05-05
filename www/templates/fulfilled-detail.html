@@ -20,5 +20,13 @@
       <h4 class="italic">Description:</h4>
       <p>{{bucketListItem.description}}</p>
     </div>
+    <div style ="margin-top:5px"> 
+      <a href="#/tab/fulfilled">
+        <button class="button button-assertive" style="width:100%" ng-click="remove(bucketListItem._id)">
+          Delete
+        </button>
+      </a>
+    </div>
+    
   </ion-content>
 </ion-view>

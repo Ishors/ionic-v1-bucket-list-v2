@@ -14,14 +14,14 @@
       <h4 class="italic">Description:</h4>
       <p>{{bucketListItem.description}}</p>
     </div>
-    <div style="display:flex; justify-content: space-evenly;margin: 5px">
+    <div style="display:flex; justify-content:space-evenly; margin-top:5px">
       <a href="#/tab/to-fulfill">
-        <button class="button button-balanced" style="width:100%" ng-click="congrats();complete(bucketListItem._id)">
+        <button class="button button-balanced" ng-click="congrats();complete(bucketListItem._id)">
           Complete
         </button>
       </a>
       <a href="#/tab/to-fulfill">
-        <button class="button button-assertive" style="width:100%" ng-click="remove(bucketListItem._id)">
+        <button class="button button-assertive"  ng-click="remove(bucketListItem._id)">
           Delete
         </button>
       </a>
