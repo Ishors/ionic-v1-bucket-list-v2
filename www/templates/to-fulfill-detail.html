@@ -11,8 +11,15 @@
     <div class="detail">
       <h4 class="italic">Deadline:</h4>
       <p>{{bucketListItem.deadline}}</p>
-      <h4 class="italic">Description:</h4>   
+      <h4 class="italic">Description:</h4>
       <p>{{bucketListItem.description}}</p>
+    </div>
+    <div style="text-align: center">
+      <a href="#/tab/to-fulfill">
+        <button class="button button-balanced centered" style="width:100%" ng-click="complete(bucketListItem._id)">
+          Complete
+        </button>
+      </a>
     </div>
   </ion-content>
 </ion-view>

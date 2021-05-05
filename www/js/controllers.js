@@ -1,12 +1,12 @@
 angular.module('starter.controllers', [])
 
-  .controller('FulfilledCtrl', function ($scope, $timeout, BucketList, FormatDate) {
+  .controller('FulfilledCtrl', function ($scope, $timeout, BucketList, Format) {
     $scope.orderProp = 'key.completedDate';
 
     BucketList.fulfilled().then(function (response) {
       $scope.bucketList = response.data.rows;
       for (var i=0; i<$scope.bucketList.length; i++){
-        $scope.bucketList[i].key.completedDate = FormatDate.format($scope.bucketList[i].key.completedDate);
+        $scope.bucketList[i].key.completedDate = Format.date($scope.bucketList[i].key.completedDate);
       }
     }, function (error) {
       console.log("Error occured ", error);
@@ -24,6 +24,9 @@ angular.module('starter.controllers', [])
       $timeout(function () {
         BucketList.fulfilled().then(function (response) {
           $scope.bucketList = response.data.rows;
+          for (var i=0; i<$scope.bucketList.length; i++){
+            $scope.bucketList[i].key.completedDate = Format.date($scope.bucketList[i].key.completedDate);
+          }
         }, function (error) {
           console.log("Error occured ", error);
         });
@@ -146,21 +149,42 @@ angular.module('starter.controllers', [])
     };
   })
 
-  .controller('BucketListItemDetailsFulfilledCtrl', function ($scope, $stateParams, BucketList, FormatDate) {
+  .controller('BucketListItemDetailsFulfilledCtrl', function ($scope, $stateParams, BucketList, Format) {
     BucketList.getItem($stateParams.bucketListItemId).then(function (response) {
       $scope.bucketListItem = response.data;
-      $scope.bucketListItem.completedDate = FormatDate.format($scope.bucketListItem.completedDate);
+      $scope.bucketListItem.completedDate = Format.date($scope.bucketListItem.completedDate);
     }, function (error) {
       console.log("Error occured ", error);
     });
   })
 
-  .controller('BucketListItemDetailsToFulfillCtrl', function ($scope, $stateParams, BucketList) {
+  .controller('BucketListItemDetailsToFulfillCtrl', function ($scope, $stateParams, $timeout, BucketList) {
     BucketList.getItem($stateParams.bucketListItemId).then(function (response) {
       $scope.bucketListItem = response.data;
     }, function (error) {
       console.log("Error occured ", error);
     });
+
+    $scope.doRefresh = function () {
+      $timeout(function () {
+        BucketList.toFulfill().then(function (response) {
+          $scope.bucketList = response.data.rows;
+        }, function (error) {
+          console.log("Error occured ", error);
+        });
+        $scope.$broadcast('scroll.refreshComplete');
+      }, 50);
+    };
+
+    $scope.complete = function (bucketListItemId) {
+      BucketList.complete(bucketListItemId).then(function (response) {
+        $scope.doRefresh();
+        console.log("Item Completed");
+      }, function (error) {
+        console.log("Error occured ", error);
+      });
+    };
+
   })
 
   .controller('AccountCtrl', function ($scope) {
