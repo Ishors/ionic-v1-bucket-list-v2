@@ -88,7 +88,6 @@ angular.module('starter.controllers', [])
     });
     // Execute action on hide modal
     $scope.$on('modal.hidden', function () {
-      
     });
     // Execute action on remove modal
     $scope.$on('modal.removed', function () {
@@ -114,8 +113,7 @@ angular.module('starter.controllers', [])
           console.log("Error occured ", error);
         });
         $scope.closeModal();
-      }
-      
+        }
     };
 
     $scope.doRefresh = function () {
