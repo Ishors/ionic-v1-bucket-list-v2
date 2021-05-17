@@ -5,15 +5,15 @@ angular.module('starter.controllers', [])
 
     BucketList.fulfilled().then(function (response) {
       $scope.bucketList = response.data.rows;
-      for (var i=0; i<$scope.bucketList.length; i++){
+      for (var i = 0; i < $scope.bucketList.length; i++) {
         $scope.bucketList[i].key.completedDate = Format.date($scope.bucketList[i].key.completedDate);
       }
     }, function (error) {
       console.log("Error occured ", error);
     });
     $scope.remove = function (bucketListItemId) {
-      Popup.delete().then(function(response){
-        if (response){
+      Popup.delete().then(function (response) {
+        if (response) {
           BucketList.removeItem(bucketListItemId).then(function (res) {
             $scope.doRefresh();
             console.log("Item deleted");
@@ -28,7 +28,7 @@ angular.module('starter.controllers', [])
       $timeout(function () {
         BucketList.fulfilled().then(function (response) {
           $scope.bucketList = response.data.rows;
-          for (var i=0; i<$scope.bucketList.length; i++){
+          for (var i = 0; i < $scope.bucketList.length; i++) {
             $scope.bucketList[i].key.completedDate = Format.date($scope.bucketList[i].key.completedDate);
           }
         }, function (error) {
@@ -39,7 +39,7 @@ angular.module('starter.controllers', [])
       }, 100);
     };
 
-    $scope.$on('refresh', function() {
+    $scope.$on('refresh', function () {
       $scope.doRefresh();
     });
   })
@@ -69,8 +69,8 @@ angular.module('starter.controllers', [])
     });
 
     $scope.remove = function (bucketListItemId) {
-      Popup.delete().then(function(response){
-        if (response){
+      Popup.delete().then(function (response) {
+        if (response) {
           BucketList.removeItem(bucketListItemId).then(function (res) {
             $scope.doRefresh();
             console.log("Item deleted");
@@ -100,12 +100,12 @@ angular.module('starter.controllers', [])
     }).then(function (modal) {
       $scope.modal = modal;
     });
-    
+
     $scope.openModal = function () {
       $scope.modal.show();
     };
     $scope.closeModal = function () {
-      $scope.modal.hide().then(function(response){
+      $scope.modal.hide().then(function (response) {
         $scope.modal.remove();
         $ionicModal.fromTemplateUrl('templates/add-item-modal.html', {
           scope: $scope,
@@ -129,7 +129,7 @@ angular.module('starter.controllers', [])
 
     $scope.createItem = function (newItem) {
       var itemToPost;
-      if (newItem.title && newItem.description && newItem.deadline){
+      if (newItem.title && newItem.description && newItem.deadline) {
         itemToPost =
         {
           "created": $scope.length + 1,
@@ -146,7 +146,7 @@ angular.module('starter.controllers', [])
         });
         $rootScope.$broadcast('refresh');
         $scope.closeModal();
-        }
+      }
     };
 
     $scope.doRefresh = function () {
@@ -160,7 +160,7 @@ angular.module('starter.controllers', [])
       }, 50);
     };
 
-    $scope.$on('refresh', function() {
+    $scope.$on('refresh', function () {
       $scope.doRefresh();
     });
   })
@@ -174,8 +174,8 @@ angular.module('starter.controllers', [])
     });
 
     $scope.remove = function (bucketListItemId) {
-      Popup.delete().then(function(response){
-        if (response){
+      Popup.delete().then(function (response) {
+        if (response) {
           BucketList.removeItem(bucketListItemId).then(function (res) {
             $rootScope.$broadcast('refresh');
             console.log("Item deleted");
@@ -188,7 +188,7 @@ angular.module('starter.controllers', [])
 
   })
 
-  .controller('BucketListItemDetailsToFulfillCtrl', function ($scope, $rootScope, $stateParams, $timeout, BucketList, Popup) {
+  .controller('BucketListItemDetailsToFulfillCtrl', function ($scope, $rootScope, $stateParams, BucketList, Popup) {
     BucketList.getItem($stateParams.bucketListItemId).then(function (response) {
       $scope.bucketListItem = response.data;
     }, function (error) {
@@ -196,8 +196,8 @@ angular.module('starter.controllers', [])
     });
 
     $scope.remove = function (bucketListItemId) {
-      Popup.delete().then(function(response){
-        if (response){
+      Popup.delete().then(function (response) {
+        if (response) {
           BucketList.removeItem(bucketListItemId).then(function (res) {
             $rootScope.$broadcast('refresh');
             console.log("Item deleted");
@@ -220,8 +220,97 @@ angular.module('starter.controllers', [])
 
   })
 
-  .controller('AccountCtrl', function ($scope) {
-    $scope.settings = {
-      enableFriends: true
+  .controller('AccountCtrl', function ($scope, WeatherAPI, GoogleMapsAPI, GeolocationHelper) {
+    $scope.ui = {
+      displayPos: false,
+      displayRandomPos: false
     };
+
+    $scope.currentPosition = {};
+    $scope.randomPosition = {};
+    $scope.currentWeather = {}
+    $scope.randomWeather = {}
+
+    $scope.$on('$ionicView.enter', function () {
+      PermissionsHelper.requestGeolocationPermission().then(function (res) {
+        alert(res);
+      });
+    });
+
+    $scope.ui.hide = function () {
+      $scope.ui.displayPos = false;
+      $scope.ui.displayRandomPos = false;
+    }
+
+    $scope.getRandomPosition = function () {
+      $scope.ui.displayRandomPos = true;
+
+      let latitude = (Math.random() * (180) - 90);
+      let longitude = (Math.random() * (360) - 180);
+
+      $scope.randomPosition.latitude = latitude;
+      $scope.randomPosition.longitude = longitude;
+
+      WeatherAPI.weather(latitude, longitude).then(function (response) {
+        $scope.randomWeather = response.data;
+      }, function (error) {
+        console.log("Error occured ", error);
+      });
+      // How to handle this better
+      setTimeout(function () {
+        GoogleMapsAPI.generateMap(latitude, longitude, 5);
+      }, 50);
+    }
+
+    $scope.getCurrentPosition = async function () {
+      $scope.ui.displayPos = true;
+      let options = {
+        enableHighAccuracy: true,
+        maximumAge: 3600000
+      }
+      try {
+        let position = await GeolocationHelper.getCurrentPosition(options);
+        $scope.currentPosition = {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+          altitude: position.coords.altitude,
+          accuracy: position.coords.accuracy,
+        };
+
+        WeatherAPI.weather(position.coords.latitude, position.coords.longitude).then(function (response) {
+          $scope.currentWeather = response.data;
+        }, function (error) {
+          console.log("Error occured ", error);
+        });
+
+        GoogleMapsAPI.generateMap(position.coords.latitude, position.coords.longitude, 15);
+      } catch (error) {
+        alert(error.message);
+      }
+    }
+    // $scope.getCurrentPosition = function(){
+    //     $scope.ui.displayPos = true;
+    //     let options = {
+    //         enableHighAccuracy: true,
+    //         maximumAge: 3600000
+    //     }
+    //     GeolocationHelper.getCurrentPosition(options).then(function(position){
+    //         $scope.currentPosition = {
+    //             latitude: position.coords.latitude,
+    //             longitude: position.coords.longitude,
+    //             altitude: position.coords.altitude,
+    //             accuracy: position.coords.accuracy,
+    //         };
+
+    //         WeatherAPI.weather(position.coords.latitude, position.coords.longitude).then(function(response){
+    //             $scope.currentWeather = response.data;
+    //         },function (error) {
+    //             console.log("Error occured ", error);
+    //         });
+
+    //         GoogleMapsAPI.generateMap(position.coords.latitude,position.coords.longitude);
+    //     }).catch(function(error){
+    //         alert(error.message);
+    //     });
+    // }
   })

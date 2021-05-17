@@ -86,4 +86,50 @@ angular.module('starter.services', [])
                 });
       }
     }
+  })
+  
+  .factory('WeatherAPI', function ($http) {
+    return {
+      weather: function (latitude, longitude) {
+        return $http.get("http://api.openweathermap.org/data/2.5/weather?lat=" + latitude + "&lon=" + longitude + "&appid=47bf31e0e8c573cc7abf060803a38a45&lang=en&units=metric");
+      }
+    };
+  })
+
+  .factory('GoogleMapsAPI', function () {
+    return {
+      generateMap: function (latitude, longitude, zoom) {
+        let latLng = new google.maps.LatLng(latitude, longitude);
+
+        let mapOptions = {
+          center: latLng,
+          zoom: zoom,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+
+        let map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+        google.maps.event.addListenerOnce(map, 'idle', function () {
+          let marker = new google.maps.Marker({
+            map: map,
+            animation: google.maps.Animation.DROP,
+            position: latLng
+          });
+        });
+      }
+    }
+  })
+
+  .factory('GeolocationHelper', function () {
+    return {
+      getCurrentPosition: function (options) {
+        return new Promise((resolve, reject) => {
+          navigator.geolocation.getCurrentPosition(function (position) {
+            resolve(position);
+          }, function (error) {
+            reject(error);
+          }, options);
+        })
+      }
+    }
   });
